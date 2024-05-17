@@ -1,0 +1,12 @@
+extends ../layout.pug
+
+block content 
+    div(class="d-flex flex-row content mx-auto")
+        div(class="profile-container")
+            include ../include/profile.pug
+        div(class="flex-fill d-flex flex column") 
+            div(class='card tweet-element') 
+                if tweets 
+                    each tweet in tweets 
+                        div(class="card tweet-element")
+                            div(class='card-body')=tweet.content

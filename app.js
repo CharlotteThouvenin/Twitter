@@ -1,8 +1,8 @@
 const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
-
 const index = require('./routes')
+require('./database')
 
 const app = express();
 
