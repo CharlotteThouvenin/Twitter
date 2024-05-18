@@ -1,12 +1,7 @@
-extends ../layout.pug
-
-block content 
-    div(class="d-flex flex-row content mx-auto")
-        div(class="profile-container")
-            include ../include/profile.pug
-        div(class="flex-fill d-flex flex column") 
-            div(class='card tweet-element') 
-                if tweets 
-                    each tweet in tweets 
-                        div(class="card tweet-element")
-                            div(class='card-body')=tweet.content
+div(class='card tweet-element') 
+    if tweets 
+        each tweet in tweets 
+            div(class="card tweet-element")
+                div(class='card-body')
+                    div(class='card-text')=tweet.content
+                    button(class="btn btn-danger mt-2 float-end" tweetid=tweet.id) x

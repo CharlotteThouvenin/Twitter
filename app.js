@@ -2,7 +2,8 @@ const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
 const index = require('./routes')
-require('./database')
+require('./database');
+const errorHandler = require('errorhandler')
 
 const app = express();
 
@@ -20,5 +21,17 @@ app.use(express.json()); // parser facilement les body encodés en json ou en ur
 app.use(express.urlencoded({ extended: true })) // idem
 
 app.use(index); // points d'entrée des routes
+
+if (process.env.NODE_ENV === 'development') {
+    app.use(errorHandler());
+} else {
+    app.use((err, res, req, next) => {
+        const code = err.code || 500
+        res.status(code).json({
+            code: code,
+            message: code === 500 ? null : err.message
+        })
+    })
+}
 
 app.listen(port)
