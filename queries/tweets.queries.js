@@ -12,3 +12,15 @@ exports.createTweet = (tweet) => {
 exports.deleteTweet = (tweetId) => {
     return Tweet.findByIdAndDelete(tweetId)
 }
+
+exports.getTweet = (tweetId) => {
+    return Tweet.findOne({ _id: tweetId }).exec();
+}
+
+exports.tweetNew = (req, res, next) => {
+    res.render('tweets/tweet-form', { tweet: {} });
+}
+
+exports.updateTweet = (tweetId, tweet) => {
+    return Tweet.findByIdAndUpdate(tweetId, { $set: tweet }, { runValidators: true });
+}

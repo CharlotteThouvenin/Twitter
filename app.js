@@ -10,10 +10,13 @@ const app = express();
 // variable d'enrironnement pour le port
 const port = process.env.PORT || 3000;
 
+exports.app = app;
 
 app.set('views', path.join(__dirname, 'views')); // récupérer les layout pug
 app.set('view engine', 'pug'); // transcrire les .pug en html
 
+require('./config/session.config')
+require('./config/passport.config')
 
 app.use(morgan('short')); // récupérer des données sur les requêtes dans la console
 app.use(express.static(path.join(__dirname, 'public'))) // permet de récupérer les fichiers
