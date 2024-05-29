@@ -1,9 +1,10 @@
 const router = require('express').Router();
+const { ensureAuthenticated } = require('../config/guards.config')
 const tweets = require('./tweets')
 const users = require('./users')
 const auth = require('./auth')
 
-router.use('/tweets', tweets);
+router.use('/tweets', ensureAuthenticated, tweets);
 router.use('/users', users);
 router.use('/auth', auth)
 
