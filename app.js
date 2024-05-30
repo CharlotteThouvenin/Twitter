@@ -6,11 +6,9 @@ require('./database');
 const errorHandler = require('errorhandler')
 
 const app = express();
-
+module.exports = app
 // variable d'enrironnement pour le port
-const port = process.env.PORT || 3000;
 
-exports.app = app;
 
 app.set('views', path.join(__dirname, 'views')); // récupérer les layout pug
 app.set('view engine', 'pug'); // transcrire les .pug en html
@@ -37,4 +35,3 @@ if (process.env.NODE_ENV === 'development') {
     })
 }
 
-app.listen(port)
