@@ -2,7 +2,7 @@ module.exports = {
   apps: [{
     name: "twitter",
     script: './bin/www',
-    instances: 'maw',
+    instances: 'max',
     autorestart: true,
     watch: true,
     env: {
