@@ -5,14 +5,20 @@ div(class="profile-container me-3 bg-white d-flex flex-column")
         img(src=user.avatar class="img-fluid" id='image-profile')
     div(class="d-flex flex-row justify-content-center align-items-center my-3 text-center")
         p= `${user.username} (${user.local.email})` 
+    if currentUser._id.toString() !== user._id.toString()
+        div(class="d-flex flex-row justify-content-center align-items-center")
+            if currentUser.following.map(objId => objId.toString()).includes(user._id.toString())
+                a(class='btn btn-primary' href="/users/unfollow/" + user._id) Unfollow 
+            else 
+                a(class='btn btn-outline-primary' href="/users/follow/" + user._id) Follow
     div(class="text-center d-flex flex-row justify-content-center align-items-center my-3")
         div(class="flex-fill")
             p 
                 strong Tweet 
                 br
-                span(class="text-primary")= tweets.length  
+                span(class="text-primary")= tweets && tweets.filter( t => t.author._id.toString() === user._id.toString()).length
         div(class="flex-fill")
             p 
                 strong Following 
                 br
-                span(class="text-primary") -
+                span(class="text-primary")= user.following.length

@@ -1,4 +1,5 @@
-const { createUser } = require("../queries/users.queries");
+const { createUser, getUserByUsername, searchUsersPerUsername, addUserIdToCurrentUserFollowing, findUserById, removeUserIdToCurrentUserFollowing } = require("../queries/users.queries");
+const { getTweetsFromUserId } = require('../queries/tweets.queries')
 const path = require('path');
 
 const multer = require('multer');
@@ -13,6 +14,34 @@ const upload = multer({
         }
     })
 })
+
+exports.userList = async (req, res, next) => {
+    try {
+        const search = req.query.search;
+        const users = await searchUsersPerUsername(search);
+        res.render('includes/search-menu', { users })
+    } catch (e) {
+        next(e)
+    }
+}
+
+exports.userProfile = async (req, res, next) => {
+    try {
+        const username = req.params.username;
+        const user = await getUserByUsername(username);
+        const tweets = await getTweetsFromUserId(user._id);
+        res.render('tweets/tweet', {
+            tweets,
+            isAuthenticated: req.isAuthenticated(),
+            currentUser: req.user,
+            user,
+            editable: false
+        });
+
+    } catch (e) {
+        next(e)
+    }
+}
 
 
 exports.signupForm = (req, res, next) => {
@@ -41,3 +70,23 @@ exports.uploadImage = [
             next(e)
         }
     }]
+
+exports.followUser = async (req, res, next) => {
+    try {
+        const userId = req.params.userId;
+        const [, user] = await Promise.all([addUserIdToCurrentUserFollowing(req.user, userId), findUserById(userId)])
+        res.redirect(`/users/${user.username}`);
+    } catch (e) {
+        next(e)
+    }
+}
+
+exports.unFollowUser = async (req, res, next) => {
+    try {
+        const userId = req.params.userId;
+        const [, user] = await Promise.all([removeUserIdToCurrentUserFollowing(req.user, userId), findUserById(userId)])
+        res.redirect(`/users/${user.username}`);
+    } catch (e) {
+        next(e)
+    }
+}
